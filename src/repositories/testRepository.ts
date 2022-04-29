@@ -1,3 +1,4 @@
+import { Test } from "@prisma/client";
 import { prisma } from "../database.js";
 
 async function getTestsByDiscipline() {
@@ -86,9 +87,26 @@ async function getFilteredTestsByTeachers(teacherName: string) {
   });
 }
 
+export type CreateTestData = Partial<Test>;
+
+function updateOrInsertTest(test: Test | CreateTestData) {
+  return prisma.test.upsert({
+    where: {
+      id: test.id
+    },
+    create: {
+      ...test as Test
+    },
+    update: {
+      views: test.views++
+    }
+  });
+}
+
 export default {
   getTestsByDiscipline,
   getFilteredTestsByDiscipline,
   getTestsByTeachers,
   getFilteredTestsByTeachers,
+  updateOrInsertTest,
 };

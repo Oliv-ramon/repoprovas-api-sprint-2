@@ -1,4 +1,7 @@
+import { Test } from "@prisma/client";
 import { Request, Response } from "express";
+
+import { CreateTestData } from "../repositories/testRepository.js";
 import testService from "../services/testService.js";
 
 async function find(req: Request, res: Response) {
@@ -16,6 +19,15 @@ async function find(req: Request, res: Response) {
   res.send({ tests });
 }
 
+async function createOrUpdate(req: Request, res: Response) {
+  const test: Test | CreateTestData = req.body;
+
+  await testService.createOrUpdate(test);
+
+  res.send(201);
+}
+
 export default {
   find,
+  createOrUpdate,
 };

@@ -4,6 +4,16 @@ import { ensureAuthenticatedMiddleware } from "../middlewares/ensureAuthenticate
 
 const testRouter = Router();
 
-testRouter.get("/tests", ensureAuthenticatedMiddleware, testController.find);
+testRouter.get(
+  "/tests",
+  ensureAuthenticatedMiddleware,
+  testController.find
+);
+
+testRouter.post(
+  "/tests",
+  ensureAuthenticatedMiddleware,
+  testController.createOrUpdate
+);
 
 export default testRouter;
