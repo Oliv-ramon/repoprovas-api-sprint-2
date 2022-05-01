@@ -19,15 +19,15 @@ async function find(req: Request, res: Response) {
   res.send({ tests });
 }
 
-async function createOrUpdate(req: Request, res: Response) {
-  const test: Test | CreateTestData = req.body;
+async function updateViews(req: Request, res: Response) {
+  const { testId } = req.params;
+  
+  await testService.updateViews(Number(testId));
 
-  await testService.createOrUpdate(test);
-
-  res.send(201);
+  res.sendStatus(201);
 }
 
 export default {
   find,
-  createOrUpdate,
+  updateViews,
 };

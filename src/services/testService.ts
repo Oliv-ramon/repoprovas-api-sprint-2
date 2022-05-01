@@ -23,11 +23,11 @@ async function find(filter: Filters) {
   }
 }
 
-function createOrUpdate(test: Test | CreateTestData) {
-  return testRepository.updateOrInsertTest(test);
+function updateViews(testId: number) {
+  return testRepository.updateViews(testId);
 }
 
 export default {
   find,
-  createOrUpdate,
+  updateViews,
 };

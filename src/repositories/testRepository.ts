@@ -89,17 +89,16 @@ async function getFilteredTestsByTeachers(teacherName: string) {
 
 export type CreateTestData = Partial<Test>;
 
-function updateOrInsertTest(test: Test | CreateTestData) {
-  return prisma.test.upsert({
+function updateViews(testId: number) {
+  return prisma.test.update({
     where: {
-      id: test.id
+      id: testId
     },
-    create: {
-      ...test as Test
-    },
-    update: {
-      views: test.views++
-    }
+    data: {
+      views: {
+        increment: 1
+      }
+    } 
   });
 }
 
@@ -108,5 +107,5 @@ export default {
   getFilteredTestsByDiscipline,
   getTestsByTeachers,
   getFilteredTestsByTeachers,
-  updateOrInsertTest,
+  updateViews,
 };

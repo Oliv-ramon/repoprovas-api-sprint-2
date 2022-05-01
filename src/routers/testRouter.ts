@@ -1,6 +1,8 @@
 import { Router } from "express";
 import testController from "../controllers/testController.js";
 import { ensureAuthenticatedMiddleware } from "../middlewares/ensureAuthenticatedMiddleware.js";
+import { validateSchemaMiddleware } from "../middlewares/validateSchemaMiddleware.js";
+import { testSchema } from "../schemas/testSchema.js";
 
 const testRouter = Router();
 
@@ -10,10 +12,17 @@ testRouter.get(
   testController.find
 );
 
-testRouter.post(
+/* testRouter.post(
   "/tests",
   ensureAuthenticatedMiddleware,
-  testController.createOrUpdate
+  validateSchemaMiddleware(testSchema),
+  testController.updateViews
+); */
+
+testRouter.patch(
+  "/tests/:testId/views",
+  ensureAuthenticatedMiddleware,
+  testController.updateViews
 );
 
 export default testRouter;
