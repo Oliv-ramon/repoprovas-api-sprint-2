@@ -1,4 +1,5 @@
-import testRepository from "../repositories/testRepository.js";
+import { Test } from "@prisma/client";
+import testRepository, { CreateTestData } from "../repositories/testRepository.js";
 
 interface Filters { 
   groupBy: string, 
@@ -22,6 +23,11 @@ async function find(filter: Filters) {
   }
 }
 
+function updateViews(testId: number) {
+  return testRepository.updateViews(testId);
+}
+
 export default {
   find,
+  updateViews,
 };
