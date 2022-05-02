@@ -1,8 +1,7 @@
 import { Test } from "@prisma/client";
 import { Request, Response } from "express";
 
-import { CreateTestData } from "../repositories/testRepository.js";
-import testService from "../services/testService.js";
+import testService, { CreateTestData } from "../services/testService.js";
 
 async function find(req: Request, res: Response) {
   const { groupBy, disciplineName, teacherName } = req.query as { 
@@ -19,6 +18,12 @@ async function find(req: Request, res: Response) {
   res.send({ tests });
 }
 
+async function create(req: Request, res: Response) {
+  await testService.create(req.body as CreateTestData);
+
+  res.sendStatus(201);
+}
+
 async function updateViews(req: Request, res: Response) {
   const { testId } = req.params;
   
@@ -29,5 +34,6 @@ async function updateViews(req: Request, res: Response) {
 
 export default {
   find,
+  create,
   updateViews,
 };

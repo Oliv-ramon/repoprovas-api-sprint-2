@@ -1,5 +1,7 @@
-import { Test } from "@prisma/client";
-import testRepository, { CreateTestData } from "../repositories/testRepository.js";
+import { TeacherDiscipline, Test } from "@prisma/client";
+
+import testRepository from "../repositories/testRepository.js";
+import teacherDisciplineService from "./teacherDisciplineService.js";
 
 interface Filters { 
   groupBy: string, 
@@ -23,6 +25,32 @@ async function find(filter: Filters) {
   }
 }
 
+export type CreateTestData = 
+  Omit<Test, "id" | "teacherDisciplineId"> & 
+  Omit<TeacherDiscipline, "id"> 
+
+async function create({
+  name,
+  pdfUrl,
+  categoryId,
+  disciplineId,
+  teacherId
+}: CreateTestData) {
+  const { id: teacherDisciplineId } = await teacherDisciplineService.findOrFail({
+    disciplineId,
+    teacherId,
+  });
+  
+  const newTest = {
+    name,
+    pdfUrl,
+    categoryId,
+    teacherDisciplineId
+  };
+
+  return  testRepository.create(newTest);
+}
+
 function updateViews(testId: number) {
   return testRepository.updateViews(testId);
 }
@@ -30,4 +58,5 @@ function updateViews(testId: number) {
 export default {
   find,
   updateViews,
+  create,
 };
