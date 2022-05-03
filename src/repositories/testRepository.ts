@@ -35,6 +35,11 @@ async function getFilteredTestsByDiscipline(disciplineName: string) {
     },
     include: {
       disciplines: {
+        where: {
+          name: {
+            contains: disciplineName
+          }
+        },
         include: {
           teacherDisciplines: {
             include: {
