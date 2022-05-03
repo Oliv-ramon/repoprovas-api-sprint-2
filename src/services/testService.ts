@@ -26,7 +26,7 @@ async function find(filter: Filters) {
 }
 
 export type CreateTestData = 
-  Omit<Test, "id" | "teacherDisciplineId"> & 
+  Omit<Test, "id" | "teacherDisciplineId" | "views"> & 
   Omit<TeacherDiscipline, "id"> 
 
 async function create({
