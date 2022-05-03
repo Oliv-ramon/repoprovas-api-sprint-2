@@ -35,6 +35,11 @@ async function getFilteredTestsByDiscipline(disciplineName: string) {
     },
     include: {
       disciplines: {
+        where: {
+          name: {
+            contains: disciplineName
+          }
+        },
         include: {
           teacherDisciplines: {
             include: {
@@ -87,7 +92,13 @@ async function getFilteredTestsByTeachers(teacherName: string) {
   });
 }
 
-export type CreateTestData = Partial<Test>;
+function create(testData: Omit<Test, "id" | "views">) {
+  return prisma.test.create({
+    data: {
+      ...testData
+    } 
+  });
+}
 
 function updateViews(testId: number) {
   return prisma.test.update({
@@ -107,5 +118,6 @@ export default {
   getFilteredTestsByDiscipline,
   getTestsByTeachers,
   getFilteredTestsByTeachers,
+  create,
   updateViews,
 };
