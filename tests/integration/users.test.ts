@@ -1,6 +1,7 @@
 import supertest from "supertest";
 import app from "../../src/app.js";
 import { prisma } from "../../src/database.js";
+import loginFactory from "../factories/loginFactory.js";
 import userBodyFactory from "../factories/userBodyFactory.js";
 import userFactory from "../factories/userFactory.js";
 
@@ -49,11 +50,7 @@ describe("POST /sign-up", () => {
 
 describe("POST /sign-in", () => {
   it("should return 200 and a token given valid credencials", async () => {
-    const user = userBodyFactory();
-
-    await userFactory(user);
-
-    const { status, body } = await supertest(app).post("/sign-in").send(user);
+    const { status,  body } = await loginFactory();
 
     expect(status).toEqual(200);
     expect(typeof(body.token)).toEqual("string");
@@ -90,10 +87,10 @@ describe("POST /sign-in", () => {
   });  
 });
 
-async function disconnect() {
+export async function disconnect() {
   await prisma.$disconnect();
-}
+};
 
-async function truncateUsers() {
+export async function truncateUsers() {
   await prisma.$queryRaw`TRUNCATE TABLE users`;
-}
+};
